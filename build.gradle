@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id "io.freefair.lombok" version "6.1.0"
+}
+
+group 'art.arcane'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven { url "https://dl.cloudsmith.io/public/arcane/archive/maven/" }
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "cloudsmith"
+            version = System.getenv("CLOUDSMITH_VERSION")
+            url = "https://maven.cloudsmith.io/arcane/archive/"
+            url = "https://maven.cloudsmith.io/arcane/archive/"
+            credentials {
+                username = System.getenv("CLOUDSMITH_USERNAME")
+                password = System.getenv("CLOUDSMITH_PASSWORD")
+            }
+        }
+    }
+}
